@@ -1,4 +1,4 @@
-PUT http://localhost:3000/post/67409021345f263f6250f082/content
+PUT http://localhost:3000/post/67409aa6937a161711bf88c3/content
 Content-Type: application/json
 
 {

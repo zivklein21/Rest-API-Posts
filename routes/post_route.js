@@ -12,5 +12,4 @@ router.get("/post", postsController.getPostBySender);
 
 router.put("/post/:id/content", postsController.updatePostContent);
 
-
 module.exports = router;
