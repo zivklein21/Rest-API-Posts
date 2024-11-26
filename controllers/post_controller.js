@@ -24,7 +24,24 @@ const getPostById = async (req, res) => {
       res.status(400).send(error.message);
     }
   };
+
+  const getAllPosts = async (req, res) => {
+    const filter = req.query.owner;
+    try {
+      if (filter) {
+        const posts = await Posts.find({ owner: filter });
+        res.send(posts);
+      } else {
+        const posts = await Posts.find();
+        res.send(posts);
+      }
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  };
+
 module.exports = {
     newPost,
-    getPostById
+    getPostById,
+    getAllPosts
 };
