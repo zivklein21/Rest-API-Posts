@@ -1,8 +1,1 @@
-POST https://localhost:3000/newPost
-Content-Type: application/json
-
-{
-    title: "post 3",
-    owner: "Ziv",
-    content: "post3"
-}
+GET http://localhost:3000/post/67409aa6937a161711bf88c3
