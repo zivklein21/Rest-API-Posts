@@ -1,36 +1,37 @@
-const Posts = require('../models/post_model');
+import Posts from "../models/post_model";
+import { Request, Response } from "express";
 
-const newPost = async (req, res) => {
+const newPost = async (req: Request, res: Response) => {
     const postBody = req.body;
     try {
       const post = await Posts.create(postBody);
-      res.status(201).send(post);
+      return res.status(201).send(post);
     } catch (error) {
-      res.status(400).send(error.message);
+      return res.status(400).send(error.message);
     }
 };
 
-const getPostById = async (req, res) => {
+const getPostById = async (req: Request, res: Response) => {
     const postId = req.params.id;
   
     try {
       const post = await Posts.findById(postId);
       if (post) {
-        res.send(post);
+        return res.send(post);
       } else {
-        res.status(404).send("Post not found");
+        return res.status(404).send("Post not found");
       }
     } catch (error) {
-      res.status(400).send(error.message);
+      return res.status(400).send(error.message);
     }
   };
 
-  const getAllPosts = async (req, res) => {
+  const getAllPosts = async (req: Request, res: Response) => {
     const filter = req.query.owner;
     try {
       if (filter) {
         const posts = await Posts.find({ owner: filter });
-        res.send(posts);
+        return res.send(posts);
       } else {
         const posts = await Posts.find();
         res.send(posts);
@@ -40,7 +41,7 @@ const getPostById = async (req, res) => {
     }
   };
 
-  const getPostBySender = async (req, res) => {
+  const getPostBySender = async (req: Request, res: Response) => {
     const { sender } = req.query;
   
     try {
@@ -55,7 +56,7 @@ const getPostById = async (req, res) => {
     }
   };
 
-  const updatePostContent = async (req, res) => {
+  const updatePostContent = async (req: Request, res: Response) => {
     const postId = req.params.id; 
     const { content } = req.body; 
   
@@ -76,10 +77,11 @@ const getPostById = async (req, res) => {
     }
   };
 
-module.exports = {
-    newPost,
-    getPostById,
-    getAllPosts,
-    getPostBySender,
-    updatePostContent
+
+export default {
+  newPost,
+  getPostById,
+  getAllPosts,
+  getPostBySender,
+  updatePostContent
 };

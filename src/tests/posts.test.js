@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
 const mongoose = require("mongoose");
-const post_model = require("../models/post_model");
+const post_model = require("../../models/post_model");
 
 beforeAll(async () => {
     console.log('beforeAll');
