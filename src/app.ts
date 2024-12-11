@@ -1,12 +1,9 @@
 import initApp from "./server";
-const port  = 3000;
+const port = process.env.PORT;
 
-initApp()
-    .then((app)=>{
-        app.listen(port, () =>{
-            console.log(`Example app listening at http://localhost:${port}`);
-        });
-    })
-    .catch(() => {
-        console.log("Error fail starting server");
-    });
+console.log("1");
+initApp().then((app) => {
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
+});

@@ -1,87 +1,59 @@
-import Posts from "../models/post_model";
+import postModel from "../models/post_model";
 import { Request, Response } from "express";
 
-const newPost = async (req: Request, res: Response) => {
-    const postBody = req.body;
-    try {
-      const post = await Posts.create(postBody);
-      return res.status(201).send(post);
-    } catch (error) {
-      return res.status(400).send(error.message);
+const getAllPosts = async (req: Request, res: Response) => {
+  const filter = req.query.owner;
+  try {
+    if (filter) {
+      const posts = await postModel.find({ owner: filter });
+      res.send(posts);
+    } else {
+      const posts = await postModel.find();
+      res.send(posts);
     }
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
 
 const getPostById = async (req: Request, res: Response) => {
-    const postId = req.params.id;
-  
-    try {
-      const post = await Posts.findById(postId);
-      if (post) {
-        return res.send(post);
-      } else {
-        return res.status(404).send("Post not found");
-      }
-    } catch (error) {
-      return res.status(400).send(error.message);
-    }
-  };
+  const postId = req.params.id;
 
-  const getAllPosts = async (req: Request, res: Response) => {
-    const filter = req.query.owner;
-    try {
-      if (filter) {
-        const posts = await Posts.find({ owner: filter });
-        return res.send(posts);
-      } else {
-        const posts = await Posts.find();
-        res.send(posts);
-      }
-    } catch (error) {
-      res.status(400).send(error.message);
+  try {
+    const post = await postModel.findById(postId);
+    if (post != null) {
+      res.send(post);
+    } else {
+      res.status(404).send("Post not found");
     }
-  };
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
 
-  const getPostBySender = async (req: Request, res: Response) => {
-    const { sender } = req.query;
-  
-    try {
-      const posts = await Posts.find({ owner: sender });
-      if (posts) {
-        res.send(posts);
-      } else {
-        res.status(404).send("Sender not found");
-      }
-    } catch (error) {
-      res.status(400).send(error.message);
-    }
-  };
+const createPost = async (req: Request, res: Response) => {
+  const postBody = req.body;
+  try {
+    const post = await postModel.create(postBody);
+    res.status(201).send(post);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
 
-  const updatePostContent = async (req: Request, res: Response) => {
-    const postId = req.params.id; 
-    const { content } = req.body; 
-  
-    try {
-      const updatedPost = await Posts.findByIdAndUpdate(
-        postId,
-        { content }, 
-        { new: true, runValidators: true } 
-      );
-  
-      if (updatedPost) {
-        res.send(updatedPost);
-      } else {
-        res.status(404).send("Post not found");
-      }
-    } catch (error) {
-      res.status(400).send(error.message);
-    }
-  };
-
+const deletePost = async (req: Request, res: Response) => {
+  const postId = req.params.id;
+  try {
+    const rs = await postModel.findByIdAndDelete(postId);
+    res.status(200).send(rs);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
 
 export default {
-  newPost,
-  getPostById,
   getAllPosts,
-  getPostBySender,
-  updatePostContent
+  createPost,
+  deletePost,
+  getPostById,
 };
