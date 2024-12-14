@@ -1,6 +1,6 @@
 import initApp from "../server";
 import mongoose from "mongoose";
-import postModel from "../models/post_model";
+import commentModel from "../models/comments_model";
 import { Express } from "express";
 import request from "supertest";
 
@@ -9,7 +9,7 @@ let app: Express;
 beforeAll(async () => {
   console.log("beforeAll");
   app = await initApp();
-  await postModel.deleteMany();
+  await commentModel.deleteMany();
 });
 
 afterAll((done) => {
